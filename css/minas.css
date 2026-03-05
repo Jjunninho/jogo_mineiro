@@ -1,0 +1,189 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #050208;
+  color: #f2d2a2;
+  font-family: 'Courier New', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 12px 0 0;
+}
+
+h1 {
+  font-size: 18px;
+  letter-spacing: 3px;
+  color: #c87030;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  text-shadow: 0 0 12px rgba(200,112,48,0.5);
+}
+
+#hud {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#status {
+  font-size: 12px;
+  color: #997755;
+  min-width: 200px;
+}
+
+.hint { font-size: 11px; color: #443322; }
+
+input#seedInput {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #5a2810;
+  background: #0d0608;
+  color: #f2d2a2;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 13px;
+  width: 110px;
+  outline: none;
+}
+input#seedInput:focus {
+  border-color: #c87030;
+  box-shadow: 0 0 6px rgba(200,112,48,0.4);
+}
+
+button {
+  padding: 6px 14px;
+  border-radius: 4px;
+  border: 1px solid #6a3010;
+  background: #1a0a04;
+  color: #e8a060;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+button:hover { background: #2a1208; }
+button:active { background: #3a1a08; }
+
+#gameCanvas {
+  display: block;
+  border: 2px solid #2a1208;
+  box-shadow: 0 0 30px rgba(100,40,10,0.4), 0 0 60px rgba(50,10,5,0.3);
+  cursor: crosshair;
+}
+
+#controls-legend {
+  margin-top: 8px;
+  font-size: 10px;
+  color: #3a2a1a;
+  letter-spacing: 1px;
+}
+
+/* ── TOOL BUTTON ──────────────────────────────────────── */
+#tool-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 8px 16px;
+  background: #1a0d04;
+  border: 2px solid #6a3010;
+  color: #c87030;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  z-index: 100;
+  transition: border-color 0.15s, color 0.15s;
+}
+#tool-btn:hover { border-color: #ffd700; color: #ffd700; }
+
+/* ── TOOL PANEL ───────────────────────────────────────── */
+#tool-panel {
+  position: fixed;
+  bottom: 58px;
+  right: 20px;
+  width: 260px;
+  background: rgba(8, 4, 2, 0.97);
+  border: 1px solid #4a2208;
+  border-top: 2px solid #c87030;
+  padding: 10px;
+  display: none;
+  flex-direction: column;
+  gap: 3px;
+  z-index: 101;
+}
+
+/* Recurso header */
+#tool-panel .res-bar {
+  display: flex;
+  gap: 14px;
+  padding: 0 2px 8px;
+  border-bottom: 1px solid #2a1208;
+  margin-bottom: 4px;
+  font-size: 11px;
+  color: #6a4a28;
+}
+#tool-panel .res-bar span { color: #f2d2a2; }
+#res-iron { color: #c87848 !important; }
+#res-gold { color: #ffd700 !important; }
+
+/* Item individual */
+.tool-item {
+  display: grid;
+  grid-template-columns: 22px 1fr 22px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.1s, border-color 0.1s;
+}
+
+.tool-item.available:hover {
+  background: rgba(200,112,48,0.12);
+  border-color: #6a3010;
+}
+
+.tool-item.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.tool-icon { font-size: 16px; text-align: center; }
+
+.tool-info { overflow: hidden; }
+.tool-name {
+  display: block;
+  font-size: 11px;
+  font-weight: bold;
+  color: #d4a870;
+  white-space: nowrap;
+}
+.tool-cost {
+  display: block;
+  font-size: 9px;
+  color: #6a5040;
+  margin-top: 1px;
+}
+.tool-desc {
+  display: block;
+  font-size: 9px;
+  color: #5a6050;
+  font-style: italic;
+  margin-top: 1px;
+}
+
+.tool-key {
+  font-size: 10px;
+  color: #8a6030;
+  text-align: center;
+  border: 1px solid #3a2010;
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-weight: bold;
+}

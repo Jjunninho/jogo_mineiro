@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mineiro 2.5D – O Jogo das Minas</title>
+  <link rel="stylesheet" href="css/minas.css">
+</head>
+<body>
+  <h1>⛏ Jogo do Mineiro — 2.5D</h1>
+
+  <!-- Botão do menu de ferramentas -->
+  <button id="tool-btn">⛏ TOOLS [Q]</button>
+
+  <!-- Painel de ferramentas (BUG FIX: data-tool agora presente, click handler em main.js) -->
+  <div id="tool-panel">
+    <div class="res-bar">
+      RECURSOS:
+      <span>⬛ <span id="res-coal">0</span></span>
+      <span style="color:#c87848">⬛ <span id="res-iron">0</span> Fe</span>
+      <span style="color:#ffd700">⬛ <span id="res-gold">0</span> Au</span>
+      <span style="color:#00e5ff">⬛ <span id="res-diamond">0</span> Di</span>
+    </div>
+
+    <div class="tool-item disabled" data-tool="1">
+      <div class="tool-icon">⛏</div>
+      <div class="tool-info">
+        <span class="tool-name">PICARETA</span>
+        <span class="tool-cost">1 Ferro</span>
+        <span class="tool-desc">Quebra 3 blocos + altura</span>
+      </div>
+      <div class="tool-key">1</div>
+    </div>
+
+    <div class="tool-item disabled" data-tool="2">
+      <div class="tool-icon">🧨</div>
+      <div class="tool-info">
+        <span class="tool-name">DINAMITE</span>
+        <span class="tool-cost">3 Fe + 1 Au</span>
+        <span class="tool-desc">Explosão raio 5 (maior!)</span>
+      </div>
+      <div class="tool-key">2</div>
+    </div>
+
+    <div class="tool-item disabled" data-tool="3">
+      <div class="tool-icon">🫧</div>
+      <div class="tool-info">
+        <span class="tool-name">GÁS EXTRATOR</span>
+        <span class="tool-cost">6 Ferro</span>
+        <span class="tool-desc">Velocidade +60% por 6s</span>
+      </div>
+      <div class="tool-key">3</div>
+    </div>
+
+    <div class="tool-item disabled" data-tool="4">
+      <div class="tool-icon">🔦</div>
+      <div class="tool-info">
+        <span class="tool-name">TOCHA</span>
+        <span class="tool-cost">3 Carvão</span>
+        <span class="tool-desc">Partículas de luz por 5s</span>
+      </div>
+      <div class="tool-key">4</div>
+    </div>
+
+    <div class="tool-item disabled" data-tool="5">
+      <div class="tool-icon">💊</div>
+      <div class="tool-info">
+        <span class="tool-name">KIT MÉDICO</span>
+        <span class="tool-cost">4 Fe + 1 Au</span>
+        <span class="tool-desc">Recupera 50 HP</span>
+      </div>
+      <div class="tool-key">5</div>
+    </div>
+
+    <div class="tool-item disabled" data-tool="6">
+      <div class="tool-icon">💣</div>
+      <div class="tool-info">
+        <span class="tool-name">GRANADA</span>
+        <span class="tool-cost">3 Ouro</span>
+        <span class="tool-desc">Explosão direcional + recuo</span>
+      </div>
+      <div class="tool-key">6</div>
+    </div>
+
+    <div class="tool-item disabled" data-tool="7">
+      <div class="tool-icon">🚀</div>
+      <div class="tool-info">
+        <span class="tool-name">FOGUETE</span>
+        <span class="tool-cost">2 Au + 3 Ca</span>
+        <span class="tool-desc">Voa 3s + desempaca se preso</span>
+      </div>
+      <div class="tool-key">7</div>
+    </div>
+	
+	<div class="tool-item disabled" data-tool="8">
+      <div class="tool-icon">🌀</div>
+      <div class="tool-info">
+        <span class="tool-name">TELEPORTE</span>
+        <span class="tool-cost">5 Di + 5 Au</span>
+        <span class="tool-desc">Pula p/ a próxima Galeria</span>
+      </div>
+      <div class="tool-key">8</div>
+    </div>
+	
+	<div class="tool-item disabled" data-tool="9">
+      <div class="tool-icon">☄️</div>
+      <div class="tool-info">
+        <span class="tool-name">LASER MINERADOR</span>
+        <span class="tool-cost">3 Di + 5 Fe</span>
+        <span class="tool-desc">Abre um túnel longo e reto</span>
+      </div>
+      <div class="tool-key">9</div>
+    </div>
+  </div>
+
+  <div id="hud">
+    <div id="status">Gerando caverna...</div>
+    <div class="hint">A/D:Mover &nbsp;|&nbsp; W/Espaço:Pular &nbsp;|&nbsp; Z/X:Picareta &nbsp;|&nbsp; 1-7:Ferr. &nbsp;|&nbsp; Q:Menu</div>
+    <div style="display:flex; gap:5px; align-items:center;">
+      <input type="text" id="seedInput" value="VORTEX" maxlength="12" placeholder="Seed...">
+      <button id="regenBtn" title="Gerar com esta seed">Gerar</button>
+      <button id="diceBtn"  title="Seed aleatória">🎲</button>
+    </div>
+  </div>
+
+  <canvas id="gameCanvas" width="960" height="540" tabindex="0"></canvas>
+
+  <div id="controls-legend">
+    MINÉRIOS: ■ Carvão(+5) &nbsp; ■ Ferro(+25) &nbsp; ■ Ouro(+75) &nbsp; ■ Diamante(+200) &nbsp;|&nbsp;
+    POWER-UPS: S=Speed &nbsp; J=Jump &nbsp; E=Escudo &nbsp; M=Ímã
+  </div>
+  
+  <script src="js/music.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/noise.js"></script>
+  <script src="js/cave.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/ores.js"></script>
+  <script src="js/enemies.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
